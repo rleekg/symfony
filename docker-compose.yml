@@ -1,0 +1,50 @@
+version: '3.9'
+
+volumes:
+  pgdata:
+
+services:
+  php-app: &php-app
+    build:
+      context: docker/php-app
+      target: base
+      args:
+        USER_ID: ${USER_ID}
+    env_file:
+      - docker/php-app/.env
+    volumes:
+      - ./:/app:delegated
+    depends_on:
+      postgres:
+        condition: service_healthy
+    extra_hosts:
+      - host.docker.internal:host-gateway
+  php-cli:
+    <<: *php-app
+    depends_on: [ ]
+    entrypoint: [ "" ]
+    command: [ "php", "-v" ]
+
+  postgres:
+    image: postgres:13
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: db_name
+      POSTGRES_USER: db_user
+      POSTGRES_PASSWORD: db_password
+    healthcheck:
+      test: /usr/bin/pg_isready
+      timeout: 10s
+      retries: 10
+
+  nginx:
+    build:
+      context: docker/nginx
+    ports:
+      - '28625:80'
+    depends_on:
+      - php-app
+    volumes:
+      - ./var/logs:/var/log/nginx
+      - ./public:/app/public:delegated
