@@ -18,7 +18,7 @@ docker-stop:
 	docker compose stop
 
 db-migration:
-	docker compose run --rm php-cli bin/console doctrine:migrations:migrate
+	docker compose run --rm php-cli bin/console doctrine:migrations:migrate --no-interaction
 
 composer-install:
 	docker compose run --rm php-cli composer install

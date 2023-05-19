@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Repository\CountryRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Uid\UuidV4;
@@ -9,7 +10,7 @@ use Symfony\Component\Uid\UuidV4;
 /**
  * Страны
  */
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: CountryRepository::class)]
 /** @final */
 class Country
 {

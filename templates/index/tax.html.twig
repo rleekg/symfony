@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+  <article>
+    <p><b>Название: </b>{{ product.name }}</p>
+    <p><b>Цена: </b>{{ product.price }}</p>
+    <p><b>Налог: </b>{{ taxAmount }}</p>
+    <p><b>Итого: </b>{{ product.price + taxAmount }}</p>
+  </article>
+{% endblock %}
