@@ -33,6 +33,8 @@ services:
       POSTGRES_DB: db_name
       POSTGRES_USER: db_user
       POSTGRES_PASSWORD: db_password
+    ports:
+      - ${POSTGRES_PORT}:5432
     healthcheck:
       test: /usr/bin/pg_isready
       timeout: 10s
